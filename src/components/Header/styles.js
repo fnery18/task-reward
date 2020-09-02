@@ -11,61 +11,61 @@ export default makeStyles((theme) => ({
     },
     root: {
         display: 'flex',
-    },
-    appBar: {
+      },
+      appBar: {
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
         }),
-    },
-    appBarShift: {
+      },
+      appBarShift: {
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
         transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
         }),
-    },
-    menuButton: {
+      },
+      menuButton: {
         marginRight: 36,
-    },
-    hide: {
+      },
+      hide: {
         display: 'none',
-    },
-    drawer: {
+      },
+      drawer: {
         width: drawerWidth,
         flexShrink: 0,
         whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
+      },
+      drawerOpen: {
         width: drawerWidth,
         transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
         }),
-    },
-    drawerClose: {
+      },
+      drawerClose: {
         transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
         }),
         overflowX: 'hidden',
         width: theme.spacing(7) + 1,
         [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1,
+          width: theme.spacing(9) + 1,
         },
-    },
-    toolbar: {
+      },
+      toolbar: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
         padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
-    },
-    content: {
+      },
+      content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-    },
+      },
 }));

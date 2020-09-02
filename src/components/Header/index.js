@@ -17,7 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
-import makeStyles from '../Header/styles.js'
+import makeStyles from '../Header/styles.js';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -27,6 +27,8 @@ export default function Header(props) {
     const { tituloHeader } = props;
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+
+    console.log(props)
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -96,12 +98,16 @@ export default function Header(props) {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key={'Configurações'}>
+                    <ListItem button key={'Configurações'} component={Link} to="/Config">
                         <ListItemIcon><SettingsIcon /></ListItemIcon>
                         <ListItemText primary={'Configurações'} />
                     </ListItem>
                 </List>
             </Drawer>
+            <main className={classes.content}>
+                <div className={classes.toolbar} />
+                {props.children}
+            </main>
         </div>
     );
 }
