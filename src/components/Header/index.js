@@ -15,8 +15,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
 import makeStyles from '../Header/styles.js'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
@@ -77,17 +76,20 @@ export default function Header(props) {
                 }}
             >
                 <div className={classes.toolbar}>
-                    <img src={logo} alt="Task Reward App" className={classes.imageLogo} />
-                    <Typography>
-                        Task Reward
-                    </Typography>
+                    <Link to="/">
+                        <img src={logo} alt="Task Reward App" className={classes.imageLogo} />
+                        <Typography>
+                            Task Reward
+                        </Typography>
+                    </Link>
+
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
                 </div>
                 <Divider />
                 <List>
-                    <ListItem button key={'Tasks'}>
+                    <ListItem button key={'Tasks'} component={Link} to="/Tasklist" >
                         <ListItemIcon><FormatListNumberedIcon /></ListItemIcon>
                         <ListItemText primary={'Tasks'} />
                     </ListItem>

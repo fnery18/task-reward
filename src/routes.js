@@ -1,13 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import Task from './pages/Tasks';
+import Home from './pages/Home';
+import Tasklist from './pages/Tasklist';
 
 export default function Routes() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={Task} />
+          <Route path="/" exact component={Home} />
+          <Route path="/Tasklist" component={Tasklist} />
         </Switch>
       </BrowserRouter>
     );
