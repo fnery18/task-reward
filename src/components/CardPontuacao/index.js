@@ -4,16 +4,14 @@ import { Typography } from '@material-ui/core';
 
 export default function CardPontuacao(props) {
     const classes = makeStyles();
-    const { titulo } = props;
-    const { valor } = props;
-    const { corBorda } = props;
+    const { valorCardPontuacao } = props;
 
     return (
-        <div className={`${corBorda} ${classes.cardPontuacao}`}>
-            <div className={classes.cardPontuacaoTitulo}>{titulo}</div>
+        <div className={`${valorCardPontuacao.corBorda} ${classes.cardPontuacao}`}>
+            <div className={classes.cardPontuacaoTitulo}>{valorCardPontuacao.titulo}</div>
             <div className={classes.cardPontuacaoValor}>
                 <Typography>
-                    {valor}
+                    {valorCardPontuacao.valor}
                 </Typography>
             </div>
         </div>
