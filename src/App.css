@@ -1,14 +1,14 @@
-div.green{
+span.green{
     background-color: #2ecc71;
     border-radius: 6px;
 }
 
-div.yellow{
+span.yellow{
     background-color: #f1c40f;
     border-radius: 6px;
 }
 
-div.red{
+span.red{
     background-color: #e74c3c;
     border-radius: 6px;
 }
