@@ -1,14 +1,15 @@
-.green {
-    border-left: 2px solid;
-    border-color: #2ecc71;
+div.green{
+    background-color: #2ecc71;
+    border-radius: 6px;
 }
 
-.yellow {
-    border-left: 2px solid;
-    border-color: #f1c40f;
+div.yellow{
+    background-color: #f1c40f;
+    border-radius: 6px;
 }
 
-.red {
-    border-left: 2px solid;
-    border-color: #e74c3c;
+div.red{
+    background-color: #e74c3c;
+    border-radius: 6px;
 }
+

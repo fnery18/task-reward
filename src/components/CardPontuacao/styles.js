@@ -9,12 +9,22 @@ export default makeStyles((theme) => ({
     },
     cardPontuacaoTitulo: {
         fontStyle: 'italic',
-        color: '#6666'
+        color: '#fff',
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
     },
     cardPontuacaoValor: {
         '& p': {
             fontSize: '30px'
         }
        
+    },
+    cardPontuacaoIcone: {
+        '& svg':{
+            float: 'right',
+            marginTop: '-45px',
+            fontSize: '35px',
+            color: '#fff'
+        }
     }
 }));

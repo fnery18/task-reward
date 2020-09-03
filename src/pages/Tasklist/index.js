@@ -13,17 +13,20 @@ export default function Tasklist(props) {
             {
                 valor: 1,
                 titulo: 'Completas',
-                corBorda: 'green'
+                corBorda: 'green',
+                icone: 'Done'
             },
             {
                 valor: 3,
                 titulo: 'Andamento',
-                corBorda: 'red'
+                corBorda: 'red',
+                icone: 'Warning'
             },
             {
                 valor: 5,
                 titulo: 'Pontos',
-                corBorda: 'yellow'
+                corBorda: 'yellow',
+                icone: 'EmojiEvents'
             }
         ]
     };
@@ -35,7 +38,7 @@ export default function Tasklist(props) {
             <Header tituloHeader="Minha Tasklist">
                 <Box className={classes.containerPontos}>
                     {state.valorCardPontuacao.map((objeto, index) => (
-                        <div key={index}>
+                        <div key={index} className={classes.divCards}>
                             <CardPontuacao valorCardPontuacao={objeto}></CardPontuacao>
                         </div>
                     ))}
