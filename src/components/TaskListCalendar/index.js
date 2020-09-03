@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import makeStyles from './styles';
 
 import List from '@material-ui/core/List';
@@ -15,25 +15,37 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Box from '@material-ui/core/Box';
 
 export default function TaskListCalendar(props) {
+
+
+    const { componentPai } = props;
+    const tasks = componentPai.tasks;
+
     const classes = makeStyles();
     const dayName = new Array("Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado");
     const monName = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Agosto", "Outubro", "Novembro", "Dezembro");
     const now = new Date;
 
-    const [checked, setChecked] = React.useState([0]);
-
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
+    const [checked, setChecked] = useState([0]);
+    const handleToggle = (task) => () => {
+        const currentIndex = checked.indexOf(task);
         const newChecked = [...checked];
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(task);
+            componentPai.handleTaskChange(true);
         } else {
             newChecked.splice(currentIndex, 1);
+            componentPai.handleTaskChange(false);
         }
 
         setChecked(newChecked);
     };
+
+    useEffect(() => {
+        setChecked(tasks.filter(c => c.finalizada).map(function (c) {
+            return c.id;
+        }))
+    }, []);
 
     return (
         <div className={classes.containerTaskList}>
@@ -53,21 +65,21 @@ export default function TaskListCalendar(props) {
 
             <Box className={classes.taskListBody} >
                 <List className={classes.root}>
-                    {[0, 1, 2, 3].map((value) => {
-                        const labelId = `checkbox-list-label-${value}`;
+                    {tasks.map((task, index) => {
+                        const labelId = `checkbox-list-label-${index}`;
 
                         return (
-                            <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
+                            <ListItem key={task.id} role={undefined} dense button onClick={handleToggle(task.id)}>
                                 <ListItemIcon>
                                     <Checkbox
                                         edge="start"
-                                        checked={checked.indexOf(value) !== -1}
+                                        checked={checked.indexOf(task.id) !== -1}
                                         tabIndex={-1}
                                         disableRipple
                                         inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                 </ListItemIcon>
-                                <ListItemText id={labelId} primary={`Tarefa ${value + 1}`} />
+                                <ListItemText id={labelId} primary={task.descricao} />
                                 <ListItemSecondaryAction>
                                     <IconButton edge="end" aria-label="comments">
                                         <CommentIcon />

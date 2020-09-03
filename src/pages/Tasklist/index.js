@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import makeStyles from './styles.js';
 import Header from '../../components/Header';
 import CardPontuacao from '../../components/CardPontuacao';
@@ -9,6 +9,33 @@ export default function Tasklist(props) {
     const classes = makeStyles();
 
     const initialState = {
+        tasks: [
+            {
+                id: 1,
+                descricao: 'Tarefax 1',
+                finalizada: true
+            },
+            {
+                id: 2,
+                descricao: 'Tarefa 2',
+                finalizada: false
+            },
+            {
+                id: 3,
+                descricao: 'Tarefa 3',
+                finalizada: false
+            },
+            {
+                id: 4,
+                descricao: 'Tarefa 4',
+                finalizada: false
+            },
+            {
+                id: 5,
+                descricao: 'Tarefa 5',
+                finalizada: false
+            }
+        ],
         valorCardPontuacao: [
             {
                 valor: 1,
@@ -17,21 +44,43 @@ export default function Tasklist(props) {
                 icone: 'Done'
             },
             {
-                valor: 3,
+                valor: 4,
                 titulo: 'Andamento',
                 corBorda: 'red',
                 icone: 'Warning'
             },
             {
-                valor: 5,
+                valor: 3,
                 titulo: 'Pontos',
                 corBorda: 'yellow',
                 icone: 'EmojiEvents'
             }
-        ]
+        ],
+        handleTaskChange: null
     };
 
-    const [state, setState] = React.useState(initialState);
+    const [state, setState] = useState(initialState);
+
+    useEffect(() => {
+        let teste = state;
+        teste.handleTaskChange =
+            function (checked) {
+                let valordCard = state.valorCardPontuacao;
+
+                if (checked) {
+                    valordCard[0].valor++;
+                    valordCard[1].valor--;
+                }
+                else {
+                    valordCard[0].valor--;
+                    valordCard[1].valor++;
+                }
+
+                setState({ ...state, valorCardPontuacao: valordCard })
+            }
+
+        setState(teste);
+    }, []);
 
     return (
         <>
@@ -46,7 +95,7 @@ export default function Tasklist(props) {
 
                 <br />
 
-                <TaskListCalendar></TaskListCalendar>
+                <TaskListCalendar componentPai={state}></TaskListCalendar>
             </Header>
         </>
     );

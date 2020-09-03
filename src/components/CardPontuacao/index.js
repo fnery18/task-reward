@@ -7,7 +7,6 @@ export default function CardPontuacao(props) {
     const { valorCardPontuacao } = props;
 
     const renderizarIcone = function(icone){
-        console.log(icone)
         let resolved = require(`@material-ui/icons/${icone}`).default
 
         return React.createElement(resolved)
