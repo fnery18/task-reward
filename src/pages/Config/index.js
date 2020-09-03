@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import makeStyles from './styles.js';
-import clsx from 'clsx';
 import Header from '../../components/Header';
 import { Typography } from '@material-ui/core';
 

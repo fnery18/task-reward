@@ -1,0 +1,14 @@
+.green {
+    border-left: 2px solid;
+    border-color: #2ecc71;
+}
+
+.yellow {
+    border-left: 2px solid;
+    border-color: #f1c40f;
+}
+
+.red {
+    border-left: 2px solid;
+    border-color: #e74c3c;
+}

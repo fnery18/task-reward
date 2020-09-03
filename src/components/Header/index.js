@@ -28,8 +28,6 @@ export default function Header(props) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
-    console.log(props)
-
     const handleDrawerOpen = () => {
         setOpen(true);
     };
