@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import makeStyles from './styles.js';
+
 import Header from '../../components/Header';
 import CardPontuacao from '../../components/CardPontuacao';
 import Box from '@material-ui/core/Box';
 import TaskListCalendar from '../../components/TaskListCalendar';
+import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
+import ModalAddTask from '../../components/ModalAddTask'
 
 export default function Tasklist(props) {
     const classes = makeStyles();
+
+    const handleModalOpen = () => {
+        setOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setOpen(false);
+    };
+
+    const [open, setOpen] = useState(false);
 
     const initialState = {
         tasks: [
@@ -96,6 +110,19 @@ export default function Tasklist(props) {
                 <br />
 
                 <TaskListCalendar componentPai={state}></TaskListCalendar>
+                
+                <div className={classes.divAcoes}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        endIcon={<AddIcon />}
+                        onClick={handleModalOpen}
+                    >
+                        Adicionar
+                </Button>
+                </div>
+                <ModalAddTask props={{ open: open, handleClose: handleModalClose }} />
             </Header>
         </>
     );
