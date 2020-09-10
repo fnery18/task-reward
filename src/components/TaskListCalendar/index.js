@@ -17,9 +17,8 @@ import Box from '@material-ui/core/Box';
 
 export default function TaskListCalendar(props) {
 
-    console.log(props);
-    const { componentPai: {tasks} } = props;
-    const { componentPai: {handleTaskChange} } = props;
+    const { props: {tasks} } = props;
+    const { props: {handleTaskChange} } = props;
 
     const classes = makeStyles();
     const dayName = new Array("Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado");

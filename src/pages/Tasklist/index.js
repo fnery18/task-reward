@@ -70,10 +70,15 @@ export default function Tasklist(props) {
                 icone: 'EmojiEvents'
             }
         ],
-        handleTaskChange: null
+        handleTaskChange: null,
+        handleTaskAdd: null
     };
 
     const [state, setState] = useState(initialState);
+    const retornarId = () => {
+        let id = Math.max.apply(Math, state.tasks.filter(c => c.id));
+        return id++;
+    }
 
     useEffect(() => {
         let teste = state;
@@ -89,8 +94,15 @@ export default function Tasklist(props) {
                     valordCard[0].valor--;
                     valordCard[1].valor++;
                 }
-
                 setState({ ...state, valorCardPontuacao: valordCard })
+            }
+
+        teste.handleTaskAdd =
+            function (descricao) {
+                let tarefa = state.tasks;
+                tarefa.push({ descricao, finalizada: false, id: retornarId() })
+                setState({ ...state, tasks: tarefa })
+                handleModalClose();
             }
 
         setState(teste);
@@ -109,8 +121,8 @@ export default function Tasklist(props) {
 
                 <br />
 
-                <TaskListCalendar componentPai={state}></TaskListCalendar>
-                
+                <TaskListCalendar props={{ tasks: state.tasks, handleTaskChange: state.handleTaskChange }}></TaskListCalendar>
+
                 <div className={classes.divAcoes}>
                     <Button
                         variant="contained"
@@ -120,9 +132,9 @@ export default function Tasklist(props) {
                         onClick={handleModalOpen}
                     >
                         Adicionar
-                </Button>
+                    </Button>
                 </div>
-                <ModalAddTask props={{ open: open, handleClose: handleModalClose }} />
+                <ModalAddTask props={{ open: open, handleClose: handleModalClose, handleTaskAdd: state.handleTaskAdd }} />
             </Header>
         </>
     );

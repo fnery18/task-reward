@@ -14,6 +14,17 @@ export default function TaskListCalendar(props) {
 
     const { props: { open } } = props;
     const { props: { handleClose } } = props;
+    const { props: { handleTaskAdd } } = props;
+    const [descricao, setDescricao] = useState('');
+
+    const handleNewTask = (e) => {
+        setDescricao(e.target.value);
+    }
+
+    const handleAdd = () => {
+        handleTaskAdd(descricao);
+        setDescricao('');
+    }
 
     return (
         <>
@@ -24,6 +35,8 @@ export default function TaskListCalendar(props) {
                         Digite o nome da sua nova tarefa de hoje.
                     </DialogContentText>
                     <TextField
+                        value={descricao}
+                        onChange={handleNewTask}
                         autoFocus
                         margin="dense"
                         label="Task"
@@ -35,7 +48,7 @@ export default function TaskListCalendar(props) {
                     <Button onClick={handleClose} color="primary">
                         Cancelar
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleAdd} color="primary">
                         Salvar
                     </Button>
                 </DialogActions>
