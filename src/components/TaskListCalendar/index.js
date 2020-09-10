@@ -16,9 +16,8 @@ import Box from '@material-ui/core/Box';
 
 
 export default function TaskListCalendar(props) {
-
-    const { props: {tasks} } = props;
-    const { props: {handleTaskChange} } = props;
+    const { props: { state } } = props;
+    const { props: { setState } } = props;
 
     const classes = makeStyles();
     const dayName = new Array("Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado");
@@ -26,23 +25,30 @@ export default function TaskListCalendar(props) {
     const now = new Date;
 
     const [checked, setChecked] = useState([0]);
-    const handleToggle = (task) => () => {
-        const currentIndex = checked.indexOf(task);
+
+    const handleDelete = (id) => () => {
+        let refreshedTasks = state.tasks.filter(c => c.id !== id);
+
+        setState({ ...state, tasks: refreshedTasks })
+    }
+
+    const handleToggle = (taskId) => () => {
+        const currentIndex = checked.indexOf(taskId);
         const newChecked = [...checked];
 
         if (currentIndex === -1) {
-            newChecked.push(task);
-            handleTaskChange(true);
+            newChecked.push(taskId);
+            state.handleTaskChange(true, taskId);
         } else {
             newChecked.splice(currentIndex, 1);
-            handleTaskChange(false);
+            state.handleTaskChange(false, taskId);
         }
 
         setChecked(newChecked);
     };
 
     useEffect(() => {
-        setChecked(tasks.filter(c => c.finalizada).map(function (c) {
+        setChecked(state.tasks.filter(c => c.finalizada).map(function (c) {
             return c.id;
         }))
     }, []);
@@ -66,7 +72,7 @@ export default function TaskListCalendar(props) {
 
                 <Box className={classes.taskListBody} >
                     <List className={classes.root}>
-                        {tasks.map((task, index) => {
+                        {state.tasks.map((task, index) => {
                             const labelId = `checkbox-list-label-${index}`;
 
                             return (
@@ -81,7 +87,7 @@ export default function TaskListCalendar(props) {
                                         />
                                     </ListItemIcon>
                                     <ListItemText id={labelId} primary={task.descricao} />
-                                    <ListItemSecondaryAction>
+                                    <ListItemSecondaryAction onClick={handleDelete(task.id)}>
                                         <IconButton edge="end" aria-label="Excluir">
                                             <DeleteIcon />
                                         </IconButton>

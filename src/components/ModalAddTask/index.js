@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function TaskListCalendar(props) {
     const classes = makeStyles();
-
+    
     const { props: { open } } = props;
     const { props: { handleClose } } = props;
     const { props: { handleTaskAdd } } = props;

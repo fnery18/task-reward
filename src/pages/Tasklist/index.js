@@ -21,13 +21,14 @@ export default function Tasklist(props) {
     };
 
     const [open, setOpen] = useState(false);
+    const [tiposCardPontuacao, setTiposCardPontuacao] = useState([]);
 
     const initialState = {
         tasks: [
             {
                 id: 1,
                 descricao: 'Tarefax 1',
-                finalizada: true
+                finalizada: false
             },
             {
                 id: 2,
@@ -50,31 +51,12 @@ export default function Tasklist(props) {
                 finalizada: false
             }
         ],
-        valorCardPontuacao: [
-            {
-                valor: 1,
-                titulo: 'Completas',
-                corBorda: 'green',
-                icone: 'Done'
-            },
-            {
-                valor: 4,
-                titulo: 'Andamento',
-                corBorda: 'red',
-                icone: 'Warning'
-            },
-            {
-                valor: 3,
-                titulo: 'Pontos',
-                corBorda: 'yellow',
-                icone: 'EmojiEvents'
-            }
-        ],
         handleTaskChange: null,
         handleTaskAdd: null
     };
 
     const [state, setState] = useState(initialState);
+
     const retornarId = () => {
         let id = Math.max.apply(Math, state.tasks.filter(c => c.id));
         return id++;
@@ -82,19 +64,27 @@ export default function Tasklist(props) {
 
     useEffect(() => {
         let teste = state;
-        teste.handleTaskChange =
-            function (checked) {
-                let valordCard = state.valorCardPontuacao;
 
-                if (checked) {
-                    valordCard[0].valor++;
-                    valordCard[1].valor--;
+        setTiposCardPontuacao(
+            [
+                {
+                    tipo: 'completo'
+                },
+                {
+                    tipo: 'andamento'
+                },
+                {
+                    tipo: 'pontos'
                 }
-                else {
-                    valordCard[0].valor--;
-                    valordCard[1].valor++;
-                }
-                setState({ ...state, valorCardPontuacao: valordCard })
+            ]);
+
+        teste.handleTaskChange =
+            function (checked, taskId) {
+                let tasksRefresh = state.tasks;
+
+                tasksRefresh.filter(c => c.id === taskId)[0].finalizada = checked;
+
+                setState({ ...state, tasks: tasksRefresh })
             }
 
         teste.handleTaskAdd =
@@ -105,23 +95,30 @@ export default function Tasklist(props) {
                 handleModalClose();
             }
 
-        setState(teste);
+        setState({
+            ...state, handleTaskAdd: teste.handleTaskAdd, handleTaskChange: teste.handleTaskChange, handleTaskDelete: teste.handleTaskDelete
+        });
+
     }, []);
+
+    useEffect(() => {
+
+    });
 
     return (
         <>
             <Header tituloHeader="Minha Tasklist">
                 <Box className={classes.containerPontos}>
-                    {state.valorCardPontuacao.map((objeto, index) => (
+                    {tiposCardPontuacao?.map((objeto, index) => (
                         <div key={index} className={classes.divCards}>
-                            <CardPontuacao valorCardPontuacao={objeto}></CardPontuacao>
+                            <CardPontuacao tipo={objeto.tipo} tasks={state.tasks}></CardPontuacao>
                         </div>
                     ))}
                 </Box>
 
                 <br />
 
-                <TaskListCalendar props={{ tasks: state.tasks, handleTaskChange: state.handleTaskChange }}></TaskListCalendar>
+                <TaskListCalendar props={{ state: state, setState: setState }}></TaskListCalendar>
 
                 <div className={classes.divAcoes}>
                     <Button
