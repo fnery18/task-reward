@@ -16,43 +16,42 @@ import Box from '@material-ui/core/Box';
 
 
 export default function TaskListCalendar(props) {
-    const { props: { state } } = props;
-    const { props: { setState } } = props;
-
+    const { handleTaskChange } = props;
+    const { tasks } = props;
+    const { handleTaskDelete } = props;
     const classes = makeStyles();
+
     const dayName = new Array("Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado");
     const monName = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Agosto", "Outubro", "Novembro", "Dezembro");
     const now = new Date;
 
-    const [checked, setChecked] = useState([0]);
+    const [tasksChecked, setTasksChecked] = useState([]);
 
-    const handleDelete = (id) => () => {
-        let refreshedTasks = state.tasks.filter(c => c.id !== id);
+    function handleTaskToggle (taskId) {
+        const currentIndex = tasksChecked.indexOf(taskId);
+        const tasksCheckedAux = [...tasksChecked];
 
-        setState({ ...state, tasks: refreshedTasks })
-    }
+        let querCompletar = currentIndex === -1;
 
-    const handleToggle = (taskId) => () => {
-        const currentIndex = checked.indexOf(taskId);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(taskId);
-            state.handleTaskChange(true, taskId);
+        console.log('estacompleta', querCompletar);
+        if (querCompletar) {
+            tasksCheckedAux.push(taskId);
+            handleTaskChange(true, taskId);
         } else {
-            newChecked.splice(currentIndex, 1);
-            state.handleTaskChange(false, taskId);
+            tasksCheckedAux.splice(currentIndex, 1);
+            handleTaskChange(false, taskId);
         }
 
-        setChecked(newChecked);
+        setTasksChecked(tasksCheckedAux);
     };
 
     useEffect(() => {
-        setChecked(state.tasks.filter(c => c.finalizada).map(function (c) {
-            return c.id;
-        }))
+
     }, []);
 
+    useEffect(() => {
+
+    })
     return (
         <>
             <div className={classes.containerTaskList}>
@@ -72,22 +71,22 @@ export default function TaskListCalendar(props) {
 
                 <Box className={classes.taskListBody} >
                     <List className={classes.root}>
-                        {state.tasks.map((task, index) => {
+                        {tasks.map((task, index) => {
                             const labelId = `checkbox-list-label-${index}`;
 
                             return (
-                                <ListItem key={task.id} role={undefined} dense button onClick={handleToggle(task.id)}>
+                                <ListItem key={task.id} role={undefined} dense button onClick={(taskId) => handleTaskToggle(task.id)}>
                                     <ListItemIcon>
                                         <Checkbox
                                             edge="start"
-                                            checked={checked.indexOf(task.id) !== -1}
+                                            checked={tasksChecked.indexOf(task.id) !== -1}
                                             tabIndex={-1}
                                             disableRipple
                                             inputProps={{ 'aria-labelledby': labelId }}
                                         />
                                     </ListItemIcon>
                                     <ListItemText id={labelId} primary={task.descricao} />
-                                    <ListItemSecondaryAction onClick={handleDelete(task.id)}>
+                                    <ListItemSecondaryAction onClick={(idTask) => handleTaskDelete(task.id)}>
                                         <IconButton edge="end" aria-label="Excluir">
                                             <DeleteIcon />
                                         </IconButton>

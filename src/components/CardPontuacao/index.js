@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import makeStyles from '../CardPontuacao/styles.js';
 import { Typography } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon'
 
 export default function CardPontuacao(props) {
-    console.log(props)
     const classes = makeStyles();
     const { tipo } = props;
     const { tasks } = props;
     const [cardPontuacao, setCardPontuacao] = useState({});
 
-    const renderizarIcone = function (icone) {
-
-        if (icone) {
-            let resolved = require(`@material-ui/icons/${icone}`).default
-
-            return React.createElement(resolved)
-        }
-    }
-
     const retornarValorCard = (tipo) => {
-        if (tipo === 'completo') {
-            return tasks?.filter(c => c.finalizada).length ?? 0;
-        } else if (tipo === 'andamento') {
-            return tasks?.filter(c => !c.finalizada).length ?? 0;
-        }
-        else {
-            return 3;
+        if (tasks.length > 0) {
+            if (tipo === 'completo') {
+                return tasks?.filter(c => c.finalizada).length ?? 0;
+            } else if (tipo === 'andamento') {
+                return tasks?.filter(c => !c.finalizada).length ?? 0;
+            }
+            else {
+                return 3;
+            }
         }
     }
 
@@ -36,7 +29,7 @@ export default function CardPontuacao(props) {
                     {
                         corBorda: 'green',
                         titulo: 'Completas',
-                        icone: 'Done'
+                        icone: 'done'
                     })
                 break;
             case 'andamento':
@@ -44,7 +37,7 @@ export default function CardPontuacao(props) {
                     {
                         corBorda: 'red',
                         titulo: 'Andamento',
-                        icone: 'Warning'
+                        icone: 'warning'
                     })
                 break;
             case 'pontos':
@@ -52,7 +45,7 @@ export default function CardPontuacao(props) {
                     {
                         titulo: 'Pontos',
                         corBorda: 'yellow',
-                        icone: 'EmojiEvents'
+                        icone: 'emoji_events'
                     })
                 break;
             default:
@@ -60,14 +53,12 @@ export default function CardPontuacao(props) {
         }
     }
 
-
-
     useEffect(() => {
         gerarDadosCard(tipo);
     }, [])
 
     useEffect(() => {
-
+        console.log('tasks do card', tasks);
     })
 
     return (
@@ -78,7 +69,7 @@ export default function CardPontuacao(props) {
                     {retornarValorCard(tipo)}
                 </Typography>
                 <span className={`${cardPontuacao.corBorda} ${classes.cardPontuacaoIcone}`}>
-                    {renderizarIcone(cardPontuacao.icone)}
+                    <Icon>{cardPontuacao?.icone?.toLowerCase()}</Icon>
                 </span>
             </div>
         </div>

@@ -13,58 +13,57 @@ export default function Tasklist(props) {
     const classes = makeStyles();
 
     const handleModalOpen = () => {
-        setOpen(true);
+        setIsOpen(true);
     };
 
     const handleModalClose = () => {
-        setOpen(false);
+        setIsOpen(false);
     };
 
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [tiposCardPontuacao, setTiposCardPontuacao] = useState([]);
+    const [tasks, setTasks] = useState([]);
 
-    const initialState = {
-        tasks: [
-            {
-                id: 1,
-                descricao: 'Tarefax 1',
-                finalizada: false
-            },
-            {
-                id: 2,
-                descricao: 'Tarefa 2',
-                finalizada: false
-            },
-            {
-                id: 3,
-                descricao: 'Tarefa 3',
-                finalizada: false
-            },
-            {
-                id: 4,
-                descricao: 'Tarefa 4',
-                finalizada: false
-            },
-            {
-                id: 5,
-                descricao: 'Tarefa 5',
-                finalizada: false
-            }
-        ],
-        handleTaskChange: null,
-        handleTaskAdd: null
-    };
+    function retornarNovoId() {
+        if (tasks.length > 0) {
+            let id = Math.max.apply(Math, tasks.map(function (c) {
+                return c.id
+            }));
+            return ++id;
+        }
+        else {
+            return 1;
+        }
+    }
 
-    const [state, setState] = useState(initialState);
+    function handleTaskAdd(descricao) {
+        let novaTask = { descricao, finalizada: false, id: retornarNovoId() };
+        let tasksAux = tasks;
+        tasksAux.push(novaTask);
 
-    const retornarId = () => {
-        let id = Math.max.apply(Math, state.tasks.filter(c => c.id));
-        return id++;
+        setTasks(tasksAux);
+        handleModalClose();
+    }
+
+    function handleTaskChange(checked, idTask) {
+        if (idTask > 0) {
+            let tarefas = tasks;
+
+            console.log('achei essa: ', tarefas.filter(c => c.id === idTask)[0]);
+            console.log('valor do checked:', checked);
+            (tarefas.filter(c => c.id === idTask)[0]).finalizada = checked;
+
+            setTasks(tarefas);
+        }
+    }
+
+    function handleTaskDelete(idTask) {
+        let tarefasAtualizadas = tasks.filter(c => c.id !== idTask);
+
+        setTasks(tarefasAtualizadas)
     }
 
     useEffect(() => {
-        let teste = state;
-
         setTiposCardPontuacao(
             [
                 {
@@ -76,28 +75,9 @@ export default function Tasklist(props) {
                 {
                     tipo: 'pontos'
                 }
-            ]);
+            ]
+        );
 
-        teste.handleTaskChange =
-            function (checked, taskId) {
-                let tasksRefresh = state.tasks;
-
-                tasksRefresh.filter(c => c.id === taskId)[0].finalizada = checked;
-
-                setState({ ...state, tasks: tasksRefresh })
-            }
-
-        teste.handleTaskAdd =
-            function (descricao) {
-                let tarefa = state.tasks;
-                tarefa.push({ descricao, finalizada: false, id: retornarId() })
-                setState({ ...state, tasks: tarefa })
-                handleModalClose();
-            }
-
-        setState({
-            ...state, handleTaskAdd: teste.handleTaskAdd, handleTaskChange: teste.handleTaskChange, handleTaskDelete: teste.handleTaskDelete
-        });
 
     }, []);
 
@@ -109,16 +89,20 @@ export default function Tasklist(props) {
         <>
             <Header tituloHeader="Minha Tasklist">
                 <Box className={classes.containerPontos}>
-                    {tiposCardPontuacao?.map((objeto, index) => (
+                    {tiposCardPontuacao.map((objeto, index) => (
                         <div key={index} className={classes.divCards}>
-                            <CardPontuacao tipo={objeto.tipo} tasks={state.tasks}></CardPontuacao>
+                            <CardPontuacao tipo={objeto.tipo} tasks={tasks}></CardPontuacao>
                         </div>
                     ))}
                 </Box>
 
                 <br />
 
-                <TaskListCalendar props={{ state: state, setState: setState }}></TaskListCalendar>
+                <TaskListCalendar
+                    tasks={tasks}
+                    handleTaskChange={(checked, idTask) => handleTaskChange(checked, idTask)}
+                    handleTaskDelete={(idTask) => handleTaskDelete(idTask)}>
+                </TaskListCalendar>
 
                 <div className={classes.divAcoes}>
                     <Button
@@ -131,7 +115,7 @@ export default function Tasklist(props) {
                         Adicionar
                     </Button>
                 </div>
-                <ModalAddTask props={{ open: open, handleClose: handleModalClose, handleTaskAdd: state.handleTaskAdd }} />
+                <ModalAddTask isOpen={isOpen} handleModalClose={() => handleModalClose()} handleTaskAdd={(descricao) => handleTaskAdd(descricao)} />
             </Header>
         </>
     );

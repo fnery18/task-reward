@@ -9,15 +9,15 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function TaskListCalendar(props) {
+export default function ModalAddTask(props) {
     const classes = makeStyles();
     
-    const { props: { open } } = props;
-    const { props: { handleClose } } = props;
-    const { props: { handleTaskAdd } } = props;
+    const {isOpen} = props;
+    const {handleModalClose} = props;
+    const {handleTaskAdd} = props;
     const [descricao, setDescricao] = useState('');
 
-    const handleNewTask = (e) => {
+    const handleInputDescricao = (e) => {
         setDescricao(e.target.value);
     }
 
@@ -28,7 +28,7 @@ export default function TaskListCalendar(props) {
 
     return (
         <>
-            <Dialog open={open ?? false} onClose={handleClose}>
+            <Dialog open={isOpen ?? false} onClose={handleModalClose}>
                 <DialogTitle>Nova Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -36,7 +36,7 @@ export default function TaskListCalendar(props) {
                     </DialogContentText>
                     <TextField
                         value={descricao}
-                        onChange={handleNewTask}
+                        onChange={handleInputDescricao}
                         autoFocus
                         margin="dense"
                         label="Task"
@@ -45,7 +45,7 @@ export default function TaskListCalendar(props) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleModalClose} color="primary">
                         Cancelar
                     </Button>
                     <Button onClick={handleAdd} color="primary">
