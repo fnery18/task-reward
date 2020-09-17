@@ -12,49 +12,63 @@ import ModalAddTask from '../../components/ModalAddTask'
 export default function Tasklist(props) {
     const classes = makeStyles();
 
-    const handleModalOpen = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [cardsPontuacao, setCardsPontuacao] = useState([]);
+    const [tasks, setTasks] = useState([]);
+
+    function handleModalOpen() {
         setIsOpen(true);
     };
 
-    const handleModalClose = () => {
+    function handleModalClose() {
         setIsOpen(false);
     };
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [tiposCardPontuacao, setTiposCardPontuacao] = useState([]);
-    const [tasks, setTasks] = useState([]);
-
     function retornarNovoId() {
-        if (tasks.length > 0) {
-            let id = Math.max.apply(Math, tasks.map(function (c) {
-                return c.id
-            }));
-            return ++id;
-        }
-        else {
-            return 1;
-        }
+        return (tasks.map(({ id }) => id)).reduce(function (a, b) {
+            return Math.max(a, b);
+        }, 0) + 1;
     }
 
     function handleTaskAdd(descricao) {
-        let novaTask = { descricao, finalizada: false, id: retornarNovoId() };
-        let tasksAux = tasks;
-        tasksAux.push(novaTask);
-
-        setTasks(tasksAux);
+        setTasks(
+            [...tasks,
+            { descricao, finalizada: false, id: retornarNovoId() }
+            ]);
         handleModalClose();
     }
 
     function handleTaskChange(checked, idTask) {
         if (idTask > 0) {
-            let tarefas = tasks;
-
-            console.log('achei essa: ', tarefas.filter(c => c.id === idTask)[0]);
-            console.log('valor do checked:', checked);
-            (tarefas.filter(c => c.id === idTask)[0]).finalizada = checked;
-
-            setTasks(tarefas);
+            setTasks(tasks.map(element => element.id == idTask ? {...element, finalizada : checked} : element));
         }
+    }
+
+    function atualizarCardsPontuacao() {
+        setCardsPontuacao(
+            [
+                {
+                    corBorda: 'green',
+                    titulo: 'Completas',
+                    icone: 'done',
+                    tipo: 'completo',
+                    valor: tasks.filter(c => c.finalizada).length
+                },
+                {
+                    corBorda: 'red',
+                    titulo: 'Andamento',
+                    icone: 'warning',
+                    tipo: 'andamento',
+                    valor: tasks.filter(c => !c.finalizada).length
+                },
+                {
+                    titulo: 'Pontos',
+                    corBorda: 'yellow',
+                    icone: 'emoji_events',
+                    tipo: 'pontos',
+                    valor: 0
+                }
+            ]);
     }
 
     function handleTaskDelete(idTask) {
@@ -64,34 +78,21 @@ export default function Tasklist(props) {
     }
 
     useEffect(() => {
-        setTiposCardPontuacao(
-            [
-                {
-                    tipo: 'completo'
-                },
-                {
-                    tipo: 'andamento'
-                },
-                {
-                    tipo: 'pontos'
-                }
-            ]
-        );
+        atualizarCardsPontuacao();
 
-
-    }, []);
+    }, [tasks]);
 
     useEffect(() => {
-
+        console.log('tasks:', tasks);
     });
 
     return (
         <>
             <Header tituloHeader="Minha Tasklist">
                 <Box className={classes.containerPontos}>
-                    {tiposCardPontuacao.map((objeto, index) => (
+                    {cardsPontuacao.map((card, index) => (
                         <div key={index} className={classes.divCards}>
-                            <CardPontuacao tipo={objeto.tipo} tasks={tasks}></CardPontuacao>
+                            <CardPontuacao cardPontuacao={card}></CardPontuacao>
                         </div>
                     ))}
                 </Box>

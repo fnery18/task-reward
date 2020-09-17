@@ -33,7 +33,6 @@ export default function TaskListCalendar(props) {
 
         let querCompletar = currentIndex === -1;
 
-        console.log('estacompleta', querCompletar);
         if (querCompletar) {
             tasksCheckedAux.push(taskId);
             handleTaskChange(true, taskId);
