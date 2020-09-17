@@ -12,6 +12,7 @@ import ModalAddTask from '../../components/ModalAddTask'
 export default function Tasklist(props) {
     const classes = makeStyles();
 
+    const appCacheName = '@taskreward-app/';
     const [isOpen, setIsOpen] = useState(false);
     const [cardsPontuacao, setCardsPontuacao] = useState([]);
     const [tasks, setTasks] = useState([]);
@@ -80,11 +81,21 @@ export default function Tasklist(props) {
     useEffect(() => {
         atualizarCardsPontuacao();
 
+        if(tasks.length > 0)
+            localStorage.setItem(appCacheName + 'tasks', JSON.stringify(tasks));
     }, [tasks]);
 
     useEffect(() => {
         console.log('tasks:', tasks);
     });
+
+    useEffect(() => {
+        let tarefasCache = JSON.parse(localStorage.getItem(appCacheName + 'tasks'));
+
+        if(tarefasCache){
+            setTasks(tarefasCache)
+        }
+    }, [])
 
     return (
         <>

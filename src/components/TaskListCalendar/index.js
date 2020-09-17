@@ -45,12 +45,20 @@ export default function TaskListCalendar(props) {
     };
 
     useEffect(() => {
-
+        
     }, []);
 
     useEffect(() => {
-
+        console.log('checkeds: ', tasksChecked)
     })
+
+    useEffect(() => {
+        console.log('mudou em', tasks);
+        setTasksChecked(tasks.filter(c => c.finalizada).map(function (c) {
+            return c.id;
+        }))
+    }, [tasks])
+
     return (
         <>
             <div className={classes.containerTaskList}>
