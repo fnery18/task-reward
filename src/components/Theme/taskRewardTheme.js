@@ -15,6 +15,10 @@ const taskRewardTheme = createMuiTheme({
         primary: {
             main: "#8e24aa"
         },
+        secondary: {
+            main: '#f1c40f',
+            contrastText: '#fff'
+        },
         background: {
             default: "#eee"
         }
